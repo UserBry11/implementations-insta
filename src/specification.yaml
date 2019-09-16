@@ -11,3 +11,67 @@ servers:
       domain:
         default: localhost:3000
         description: Domain
+paths:
+  /images:
+    get:
+      summary: Get a picture from server
+      tags:
+        - Images
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageURIs:
+                    type: array
+                    items:
+                      type: string
+                  statusCode:
+                    type: integer
+                required:
+                  - imageURIs
+                  - statusCode
+    post:
+      summary: Post a picture to server
+      tags:
+        - Images
+      requestBody:
+        description: 'Picture data that is one of gif, jpeg, png'
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+                - image
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageURI:
+                    type: string
+                  statusCode:
+                    type: integer
+        415:
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
