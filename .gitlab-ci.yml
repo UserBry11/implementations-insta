@@ -10,4 +10,4 @@ pages:
   only:
   - master
   variables:
-  PUBLIC_URL: "/kenziegram_stub"
+    PUBLIC_URL: "/kenziegram_stub"
