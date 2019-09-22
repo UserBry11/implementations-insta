@@ -4,7 +4,7 @@ import React from "react";
 import { hydrate } from "react-dom";
 
 hydrate(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <App />
   </BrowserRouter>,
   document.getElementById("root")
