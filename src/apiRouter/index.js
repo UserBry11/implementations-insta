@@ -7,6 +7,6 @@ const apiRouter = express.Router();
 apiRouter
     .get("/images", getImages)
     .post("/images", postImage)
-    .get("/", swaggerDocsRouter);
+    .use("/", swaggerDocsRouter);
 
 export default apiRouter;
