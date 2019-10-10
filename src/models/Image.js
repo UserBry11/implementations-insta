@@ -1,31 +1,39 @@
-import fs from "fs";
-
-
-fs.promises.mkdir(process.env.RAZZLE_PUBLIC_DIR + "/images")
-    .catch(err => {
-        if(err.code === "exists"){
-            throw err;
-        }
-    })
+import admin from "firebase-admin";
+import serviceAccount from "./firebaseAdminServiceAccount.json";
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "kenziegram-dc42e.appspot.com"
+});
+const bucket = admin.storage().bucket();
 
 // () -> Promise<Array<URI: String>>
-// fs.promises.readdir
-const find = () => {
-    return fs.promises.readdir(process.env.RAZZLE_PUBLIC_DIR + "/images")
-    .then(imageNames => {
-        console.log(imageNames);
-        return imageNames.map(filename => "/images/" + filename);
-    });
+export const find = () => {
+    return bucket.getFiles().then( data => {
+        const files = data[0];
+        const fileURLs = files.map( file => {
+            return file.getSignedUrl({
+                action: "read",
+                expires: Date.now() + 1000 * 60 * 60
+            });
+        });
+        return Promise.all(fileURLs);
+    }).then(fileURLs => {
+        return fileURLs.map(fileURL => fileURL[0])
+    })
 };
 
 //(Buffer) => Promise<URI: String>
-// fs.promises.readdir(path[, options])
-const create = buffer => {
+export const create = buffer => {
     const timestamp = Date.now();
-    return fs.promises.writeFile(process.env.RAZZLE_PUBLIC_DIR + "/images/" + timestamp, buffer)
-    .then(() => {
-            return "/images/" + timestamp;
-        })
+    const file = bucket.file(String(timestamp));
+    return file
+        .save(buffer)
+        .then(() => {
+        return file.getSignedUrl({
+            action: "read",
+            expires: Date.now() + 1000 * 60 * 60
+        });
+    }).then(fileURL => fileURL[0]);
 };
 
 export default {
