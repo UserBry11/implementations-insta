@@ -43,7 +43,7 @@ class Home extends React.Component {
     return (
       <React.Fragment>
         <form onSubmit={this.handleUploadImage}>
-          <input type="file" />
+          <input type="file" name="image" />
           <button type="submit">Upload Image, Please</button>
         </form>
         {this.state.postImageLoading && "Uploading image..."}

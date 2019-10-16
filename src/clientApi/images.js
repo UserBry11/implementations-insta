@@ -1,13 +1,12 @@
-import { getImagesResponse, postImageResponse } from "../apiStubs";
 
 export const getImages = () => {
-    return new Promise( (resolve, reject) => {
-        resolve(getImagesResponse)
-    })
+    return fetch("/api/images")
+    .then(response => response.json())
 };
 
 export const postImage = formData => {
-    return new Promise( (resolve, reject) => {
-        resolve(postImageResponse);
-    })
-}
+    return fetch("/api/images", {
+        method: "POST",
+        body: formData
+    }).then(response => response.json());
+};

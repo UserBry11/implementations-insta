@@ -18,11 +18,6 @@ export const postImage = [
         Image.create(request.file.buffer).then(uri => {
             response.send( { imageURI: uri, statusCode: 200 });
         })
-        // .catch(err => {
-        //     response
-        //         .status(400)
-        //         .send( { message: "This is the error right here", statusCode: 400 });
-        // });
     }
 ];  
 

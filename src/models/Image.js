@@ -1,5 +1,6 @@
 import admin from "firebase-admin";
-import serviceAccount from "./firebaseAdminServiceAccount.json";
+const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT)
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "kenziegram-dc42e.appspot.com"
@@ -26,9 +27,7 @@ export const find = () => {
 export const create = buffer => {
     const timestamp = Date.now();
     const file = bucket.file(String(timestamp));
-    return file
-        .save(buffer)
-        .then(() => {
+    return file.save(buffer).then(() => {
         return file.getSignedUrl({
             action: "read",
             expires: Date.now() + 1000 * 60 * 60
