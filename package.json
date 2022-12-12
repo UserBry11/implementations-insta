@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "connected-react-router": "^6.5.2",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "firebase-admin": "^8.6.0",
     "multer": "^1.4.2",
     "razzle": "3.0.0",
